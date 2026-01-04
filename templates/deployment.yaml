@@ -1,78 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ChartPingPruebaShort.fullname" . }}
-  labels:
-    {{- include "ChartPingPruebaShort.labels" . | nindent 4 }}
+  name: ping-prueba
+  namespace: default
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 1
   selector:
     matchLabels:
-      {{- include "ChartPingPruebaShort.selectorLabels" . | nindent 6 }}
+      app: ping-prueba
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "ChartPingPruebaShort.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        app: ping-prueba
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "ChartPingPruebaShort.serviceAccountName" . }}
-      {{- with .Values.podSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
-          {{- with .Values.securityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-          {{- with .Values.livenessProbe }}
-          livenessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.readinessProbe }}
-          readinessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.resources }}
-          resources:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.volumeMounts }}
-          volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
-      volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      - name: ping-prutba-short
+        image: 116933114869.dkr.ecr.us-east-1.amazonaws.com/zn-ecr-ping-prueba:lastest
+        ports:
+        - containerPort: 30300
+## Primero debemos de conectarnos al EKS donde queremos hacer los despliegues
+## Ejercutamos el siguiente comando para ver en que EKS estamos ubicados
+## kubectl get svc
+## Ejecutamos el siguiente comando para apuntar a un EKS especificado
+## aws eks update-kubeconfig --region us-east-2 --name eks-github-cd-ci-2-1
+## Ejecutamos el siguiente comando
+## kubectl apply -f ./src/main/resources/Despliegue/deployment.yaml
+## tagear docker tag ping-prueba-short:latest 116933114869.dkr.ecr.us-east-1.amazonaws.com/zn-ecr-ping-prueba:lastest
+## Logear aws ecr get-login-password | docker login --username AWS --password-stdin 116933114869.dkr.ecr.us-east-1.amazonaws.com
+## enviar docker push 116933114869.dkr.ecr.us-east-1.amazonaws.com/zn-ecr-ping-prueba:lastest

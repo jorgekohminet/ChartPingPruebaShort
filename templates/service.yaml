@@ -1,15 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "ChartPingPruebaShort.fullname" . }}
-  labels:
-    {{- include "ChartPingPruebaShort.labels" . | nindent 4 }}
+  name: ping-prueba-short-svc
+  namespace: default
 spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
   selector:
-    {{- include "ChartPingPruebaShort.selectorLabels" . | nindent 4 }}
+    app: ping-prueba-short-svc
+  ports:
+    - protocol: TCP
+      port: 30300
+      targetPort: 8080
