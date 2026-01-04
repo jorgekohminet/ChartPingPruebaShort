@@ -14,7 +14,7 @@ spec:
         app: ping-prueba
     spec:
       containers:
-      - name: ping-prutba-short
+      - name: ping-prueba
         image: 116933114869.dkr.ecr.us-east-1.amazonaws.com/zn-ecr-ping-prueba:lastest
         ports:
         - containerPort: 30300
