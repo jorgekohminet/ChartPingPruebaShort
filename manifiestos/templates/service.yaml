@@ -5,8 +5,9 @@ metadata:
   namespace: default
 spec:
   selector:
-    app: ping-prueba-short-svc
+    app: ping-prueba-short
   ports:
     - protocol: TCP
       port: 30300
       targetPort: 8080
+  type: LoadBalancer
